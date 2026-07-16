@@ -1,0 +1,60 @@
+---
+description: How to turn Robinhood option-chain data into a valid trade-ticket JSON — strike selection, leg fields, mid/credit math, earnings attestation. Use when building or editing any ticket in data/tickets/.
+alwaysApply: false
+---
+
+
+# Trade construction — chain data → ticket JSON
+
+A ticket is pure data. You select candidates mechanically; every judgment (gates, POP,
+sizing, approval) happens downstream in `rht`. Ticket schema: `src/rh_options/models.py::TradeTicket`.
+
+## Strike selection
+
+1. Direction from the 200-day MA (RULES.md §1): above → put credit spread; below → call
+   credit spread. SPY may also take an iron condor (both sides, same expiry).
+2. Short strike: the strike whose |delta| is nearest the 0.20-0.30 band, taken from live
+   `get_option_quotes` greeks — never estimated.
+3. Long strike: exactly $1 further OTM. If the chain has no $1 increment there, there is no
+   trade on this symbol today.
+
+## Ticket fields that trip people up
+
+- `legs[].quoted_at`: the actual quote timestamp, UTC ISO-8601. Freshness gate uses it;
+  quotes older than 10 minutes at validation time fail.
+- `legs[].delta`: signed, straight from the chain (puts negative). The gate takes |delta|.
+- Credit is **not** a field — `rht` computes it from leg mids so you cannot fat-finger it.
+- Earnings: set `next_earnings_date` (ISO date) when one exists, or `earnings_confirmed_none:
+  true` plus `earnings_source` describing how you verified (e.g. "last report 2026-07-08,
+  next cycle ~2026-10-06, get_earnings_calendar clear"). Setting neither fails the gate —
+  deliberately.
+- `vix` for SPY tickets; `iv_rank` + `iv_rank_source` (from `rht iv rank`) for single names.
+
+## Worked example
+
+```json
+{
+  "symbol": "SOFI",
+  "structure": "put_credit_spread",
+  "contracts": 1,
+  "underlying_price": 17.87,
+  "dma_200": 16.52,
+  "iv_rank": 63.0,
+  "iv_rank_source": "true",
+  "next_earnings_date": "2026-10-27",
+  "earnings_source": "get_earnings_calendar + quarterly cycle from last report 2026-07-28",
+  "legs": [
+    {"action": "sell", "option_type": "put", "strike": 16.0, "expiry": "2026-08-21",
+     "bid": 0.57, "ask": 0.62, "delta": -0.28, "open_interest": 667,
+     "quoted_at": "2026-07-16T14:32:11Z"},
+    {"action": "buy", "option_type": "put", "strike": 15.0, "expiry": "2026-08-21",
+     "bid": 0.30, "ask": 0.35, "delta": -0.15, "open_interest": 756,
+     "quoted_at": "2026-07-16T14:32:11Z"}
+  ]
+}
+```
+
+Save to `data/tickets/<UTC-timestamp>-<SYM>.json`, then run the pipeline:
+`rht validate` → `rht pop --iv <ATM IV>` → `rht opinion request --iv <ATM IV>`.
+Never edit a ticket after validation — the hash changes and every approval dies with it
+(that is a feature; build a new ticket instead).

@@ -1,0 +1,9 @@
+{
+  "//": "Only the Robinhood agentic-trading server. Cursor caps ~40 active tools across ALL servers and Robinhood alone is ~40 — do not add more servers to this project. OAuth happens in Cursor (Settings -> Tools & MCPs -> Connect); no keys live anywhere in this repo.",
+  "mcpServers": {
+    "robinhood-trading": {
+      "type": "http",
+      "url": "https://agent.robinhood.com/mcp/trading"
+    }
+  }
+}

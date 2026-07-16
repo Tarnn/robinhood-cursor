@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeShellExecution": [
+      { "command": "cd \"$(git rev-parse --show-toplevel 2>/dev/null || pwd)\" && bash ./.claude/hooks/protect-paths.sh", "timeout": 15, "failClosed": true }
+    ],
+    "beforeReadFile": [],
+    "afterFileEdit": [
+      { "command": "cd \"$(git rev-parse --show-toplevel 2>/dev/null || pwd)\" && bash ./.claude/hooks/protect-paths.sh", "timeout": 15, "failClosed": true }
+    ]
+  }
+}
