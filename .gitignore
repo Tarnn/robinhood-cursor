@@ -1,0 +1,11 @@
+# secrets — reviewer API keys live here and only here
+.env
+
+# python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+dist/

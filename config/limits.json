@@ -1,0 +1,53 @@
+{
+  "//": "HUMAN-EDITED ONLY. Machine-readable mirror of rules/RULES.md — rules_version must match its frontmatter version (enforced by tests). The agent may never edit this file (hook-enforced). Flipping mode to 'live' is the deliberate, human-only end of the shadow period.",
+  "rules_version": "1.0.0",
+  "mode": "shadow",
+  "universe": {
+    "whitelist": ["SPY", "SOFI", "T", "F", "AAL", "KWEB", "UNG"],
+    "iron_condor_only": ["SPY"],
+    "spy_symbol": "SPY"
+  },
+  "entry": {
+    "iv_rank_min": 50.0,
+    "vix_min_spy": 18.0,
+    "short_delta_min": 0.2,
+    "short_delta_max": 0.3,
+    "dte_min": 30,
+    "dte_max": 45,
+    "min_credit": 0.25,
+    "min_credit_spy": 0.2,
+    "min_open_interest": 500,
+    "max_leg_spread_abs": 0.05,
+    "max_leg_spread_pct_of_mid": 0.1,
+    "spread_width": 1.0,
+    "quote_max_age_minutes": 10
+  },
+  "sizing": {
+    "max_contracts": 1,
+    "max_concurrent_positions": 1,
+    "max_loss_per_position": 100.0,
+    "max_total_open_risk": 150.0,
+    "min_cash_reserve": 100.0
+  },
+  "exits": {
+    "profit_target_pct_of_credit": 0.5,
+    "stop_multiple_of_credit": 2.0,
+    "hard_close_dte": 14
+  },
+  "breakers": {
+    "equity_halt_threshold": 200.0,
+    "equity_halt_days": 30,
+    "max_consecutive_stop_outs": 2,
+    "rolling_window_trades": 20,
+    "min_rolling_win_rate": 0.7
+  },
+  "execution": {
+    "walk_after_seconds": 60,
+    "max_chase_below_mid": 0.02,
+    "review_tolerance": 0.05
+  },
+  "approvals": {
+    "max_freshness_minutes": 15,
+    "max_retries_per_symbol_per_day": 1
+  }
+}

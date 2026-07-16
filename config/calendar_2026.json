@@ -1,0 +1,22 @@
+{
+  "//": "Static macro-event dates for the no-event-before-expiry gate. FOMC: federalreserve.gov/monetarypolicy/fomccalendars.htm; CPI: bls.gov/schedule/news_release/cpi.htm (both verified 2026-07-16). Refresh this file each January and whenever BLS revises the schedule — the events gate fails closed past the last listed date.",
+  "valid_through": "2026-12-31",
+  "fomc": [
+    "2026-01-27", "2026-01-28",
+    "2026-03-17", "2026-03-18",
+    "2026-04-28", "2026-04-29",
+    "2026-06-16", "2026-06-17",
+    "2026-07-28", "2026-07-29",
+    "2026-09-15", "2026-09-16",
+    "2026-10-27", "2026-10-28",
+    "2026-12-08", "2026-12-09"
+  ],
+  "cpi": [
+    "2026-07-14",
+    "2026-08-12",
+    "2026-09-11",
+    "2026-10-14",
+    "2026-11-10",
+    "2026-12-10"
+  ]
+}

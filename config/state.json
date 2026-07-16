@@ -1,0 +1,11 @@
+{
+  "//": "MACHINE-MUTATED ONLY via `rht state ...`. Halts are auto-set by the CLI and can only be cleared by a human editing this file (see docs/workflow.md). Committed for auditability.",
+  "schema_version": 1,
+  "halts": [],
+  "consecutive_stop_outs": 0,
+  "equity_high_water": 250.0,
+  "last_equity": 250.0,
+  "rolling_results": [],
+  "open_positions": [],
+  "updated_at": null
+}
