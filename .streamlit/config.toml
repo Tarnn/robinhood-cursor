@@ -1,0 +1,6 @@
+[runner]
+# Never auto-render bare expressions: the dashboard shows only what it means to show.
+magicEnabled = false
+
+[browser]
+gatherUsageStats = false

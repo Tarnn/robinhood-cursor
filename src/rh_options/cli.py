@@ -19,7 +19,7 @@ from typing import Any
 from dotenv import load_dotenv
 
 from . import events as events_mod
-from . import gates, ivrank, journal, pop_ev, preflight, second_opinion, sizing
+from . import gates, ivrank, journal, pop_ev, preflight, second_opinion, sizing, snapshot
 from . import state as state_mod
 from .models import (
     Limits,
@@ -283,6 +283,11 @@ def cmd_probe(args: argparse.Namespace) -> int:
     return EXIT_PASS
 
 
+def cmd_snapshot(args: argparse.Namespace) -> int:
+    _emit(snapshot.build(find_root()))
+    return EXIT_PASS
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="rht", description=__doc__)
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -361,6 +366,9 @@ def build_parser() -> argparse.ArgumentParser:
     s8 = psub.add_parser("record")
     s8.add_argument("results")
     sp.set_defaults(fn=cmd_probe)
+
+    sp = sub.add_parser("snapshot", help="read-only desk status JSON (feeds the dashboard)")
+    sp.set_defaults(fn=cmd_snapshot)
 
     return p
 
