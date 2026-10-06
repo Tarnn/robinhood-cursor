@@ -87,9 +87,25 @@ supervised desk, not a 24/7 bot.
 | `/journal` / `/postmortem` | render stats / per-trade analysis → lesson candidates |
 | `/improve` | weekly self-improvement loop (docs autonomously; rule changes need ADR + you) |
 
+## Dashboard (read-only)
+
+```bash
+make dashboard        # uv run --extra dashboard streamlit run dashboard/app.py → localhost:8501
+make snapshot         # the same desk status as JSON (rht snapshot)
+```
+
+Seven tabs: **Desk** (mode, halts, equity, open positions with exit levels, go-live checklist) ·
+**Market** (VIX, whitelist trend / RV20 / ATM IV / IV rank, candlestick chart with 50/200-day MAs)
+· **Screener** (enumerates $1 credit spreads in the delta band and runs the real 11 gates +
+POP/EV on each, with a payoff chart) · **Journal** (equity curve, P&L, entries) · **Pipeline**
+(tickets → validation → opinion freshness) · **Calendar** (FOMC/CPI and the entry dates whose
+30–45 DTE expiries clear them) · **News**. Market data is free, keyless, delayed Yahoo data via
+`yfinance`, for research only. The app has no order buttons; the money path stays in `rht` + MCP.
+See [`docs/dashboard.md`](docs/dashboard.md) for data sources and optional free APIs.
+
 ## Repo map
 
 `rules/RULES.md` ruleset (canonical, versioned) · `config/` limits + state + macro calendar ·
-`src/rh_options/` the `rht` CLI · `data/` tickets, validations, opinions, journal, IV history ·
+`src/rh_options/` the `rht` CLI · `dashboard/` Streamlit app · `data/` tickets, validations, opinions, journal, IV history ·
 `.claude/` + `.cursor/` agent skills/commands/rules (`.cursor` is generated — `make cursor`) ·
 `knowledge/` lessons + ADRs · `docs/` workflow + strategy rationale · `tests/` no-network suite.

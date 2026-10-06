@@ -13,6 +13,14 @@ dependencies = [
 [project.scripts]
 rht = "rh_options.cli:main"
 
+[project.optional-dependencies]
+dashboard = [
+    "pandas>=2.2",
+    "plotly>=5.24",
+    "streamlit>=1.40",
+    "yfinance>=0.2.50",
+]
+
 [dependency-groups]
 dev = [
     "pytest>=8.0",
